@@ -8,28 +8,33 @@
 import UIKit
 
 class InstagramCloneView: UICollectionView {
-    
-    private let avatarHeight: CGFloat = 40
-    private let avatarTopPadding: CGFloat = 8
-    private let avatarBottomPadding: CGFloat = 8
-    private var headerHeight: CGFloat{
-        avatarHeight + avatarTopPadding + avatarBottomPadding
+
+    private static func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .estimated(500)
+        )
+        
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .estimated(500)
+        )
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+        let section = NSCollectionLayoutSection(group: group)
+        return UICollectionViewCompositionalLayout(section: section)
     }
-    private let actionBarHeight: CGFloat = 56
-    private let spacing: CGFloat = 24
 
     init (frame: CGRect) {
-        let layout = UICollectionViewFlowLayout()
+        let layout = InstagramCloneView.createCompositionalLayout()
         super.init(frame: frame, collectionViewLayout: layout)
-        layout.scrollDirection = .vertical
-        self.register(InstagramCloneCell.self, forCellWithReuseIdentifier: "cell")
-        (collectionViewLayout as? UICollectionViewFlowLayout)?.itemSize = CGSize(width: UIScreen.main.bounds.width, height: headerHeight + UIScreen.main.bounds.width + actionBarHeight + spacing)
+        self.register(InstagramCloneCell.self, forCellWithReuseIdentifier: InstagramCloneCell.reuseIdentifier)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
 }
     
 
