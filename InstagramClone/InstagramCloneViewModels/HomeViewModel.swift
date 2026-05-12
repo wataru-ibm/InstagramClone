@@ -9,10 +9,32 @@ import Combine
 
 class HomeViewModel {
     @Published private(set) var posts: [Post] = []
-
-    func loadPosts() {
-        posts = Post.sampleData
+    @Published private(set) var status: Status = .loading
+    
+    enum Status {
+        case loading
+        case loaded
+        case error(String)
     }
+    
+    func loadPosts() async {
+        
+        if posts.isEmpty {
+            status = .loading
+        }
+        
+        do {
+            posts = try await APIClient.shared.fetchPosts()
+            status = .loaded
+        } catch {
+            if posts.isEmpty {
+                status = .error(error.localizedDescription)
+            }
+            print("[HomeViewModel] 投稿取得失敗: \(error.localizedDescription)")
+        }
+    }
+
+    
 
     func toggleLike(at index: Int) {
         guard posts.indices.contains(index) else {

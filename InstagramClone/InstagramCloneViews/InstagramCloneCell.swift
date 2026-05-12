@@ -9,7 +9,7 @@ import UIKit
 
 class InstagramCloneCell: UICollectionViewCell {
     
-    private let avatarView = UIView()
+    private let avatarView = UIImageView()
     private let usernameLabel = UILabel()
     private let postImageView = UIImageView()
     private let likeCountLabel = UILabel()
@@ -52,15 +52,25 @@ class InstagramCloneCell: UICollectionViewCell {
         }
     }
     
-    var avatarColor: UIColor = .clear {
+    var avatarUrl: String = "" {
         didSet {
-            avatarView.backgroundColor = avatarColor
+            Task {
+                let image = await ImageLoader.shared.loadImage(urlString: avatarUrl)
+                await MainActor.run {
+                    avatarView.image = image
+                }
+            }
         }
     }
     
-    var imageColor: UIColor = .clear {
+    var imageUrl: String = "" {
         didSet {
-            postImageView.backgroundColor = imageColor
+            Task {
+                let image = await ImageLoader.shared.loadImage(urlString: imageUrl)
+                await MainActor.run {
+                    postImageView.image = image
+                }
+            }
         }
     }
     

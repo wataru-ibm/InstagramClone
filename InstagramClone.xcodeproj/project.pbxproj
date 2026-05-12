@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		6866B41F2FB17C83002C734D /* SkeletonView in Frameworks */ = {isa = PBXBuildFile; productRef = 6866B41E2FB17C83002C734D /* SkeletonView */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		6866B3A72F921DD5002C734D /* InstagramClone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InstagramClone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6866B41F2FB17C83002C734D /* SkeletonView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +83,7 @@
 			);
 			name = InstagramClone;
 			packageProductDependencies = (
+				6866B41E2FB17C83002C734D /* SkeletonView */,
 			);
 			productName = InstagramClone;
 			productReference = 6866B3A72F921DD5002C734D /* InstagramClone.app */;
@@ -107,6 +113,9 @@
 			);
 			mainGroup = 6866B39E2F921DD5002C734D;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				6866B41D2FB17C83002C734D /* XCRemoteSwiftPackageReference "SkeletonView" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 6866B3A82F921DD5002C734D /* Products */;
 			projectDirPath = "";
@@ -333,6 +342,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		6866B41D2FB17C83002C734D /* XCRemoteSwiftPackageReference "SkeletonView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Juanpe/SkeletonView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.31.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6866B41E2FB17C83002C734D /* SkeletonView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6866B41D2FB17C83002C734D /* XCRemoteSwiftPackageReference "SkeletonView" */;
+			productName = SkeletonView;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 6866B39F2F921DD5002C734D /* Project object */;
 }
