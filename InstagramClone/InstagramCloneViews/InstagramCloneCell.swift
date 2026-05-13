@@ -54,7 +54,7 @@ class InstagramCloneCell: UICollectionViewCell {
     
     var avatarUrl: String = "" {
         didSet {
-            Task {
+            avatarLoadTask = Task {
                 let image = await ImageLoader.shared.loadImage(urlString: avatarUrl)
                 await MainActor.run {
                     avatarView.image = image
@@ -65,7 +65,7 @@ class InstagramCloneCell: UICollectionViewCell {
     
     var imageUrl: String = "" {
         didSet {
-            Task {
+            imageLoadTask = Task {
                 let image = await ImageLoader.shared.loadImage(urlString: imageUrl)
                 await MainActor.run {
                     postImageView.image = image
@@ -75,6 +75,8 @@ class InstagramCloneCell: UICollectionViewCell {
     }
     
     var onLikeTapped: (() -> Void)?
+    var avatarLoadTask: Task<Void, Never>?
+    var imageLoadTask: Task<Void, Never>?
     
     @objc private func likeTapped() {
         onLikeTapped?()
@@ -94,6 +96,16 @@ class InstagramCloneCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        avatarLoadTask?.cancel()
+        avatarLoadTask = nil
+        avatarView.image = nil
+        imageLoadTask?.cancel()
+        imageLoadTask = nil
+        postImageView.image = nil
     }
     
     private func setupUIStackView() {

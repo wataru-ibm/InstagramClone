@@ -71,6 +71,9 @@ class InstagramCloneViewController: UIViewController {
             return cell
         }
         
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
+        collectionView.refreshControl = refreshControl
         
         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -95,6 +98,13 @@ class InstagramCloneViewController: UIViewController {
             errorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             errorView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
         ])
+    }
+    
+    @objc private func pullToRefresh() {
+        Task {
+            await viewModel.loadPosts()
+            collectionView.refreshControl?.endRefreshing()
+        }
     }
 
     private func applySnapshot(_ posts: [Post]) {
