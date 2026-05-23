@@ -82,10 +82,17 @@ class InstagramCloneLoadingView: UIView {
         captionView.widthAnchor.constraint(equalToConstant: 200).isActive = true
         captionView.isSkeletonable = true
         
-        let bottomStackView = UIStackView(arrangedSubviews: [heartView, likeCountView, captionView])
+        let actionStackView = UIStackView(arrangedSubviews: [heartView, likeCountView])
+        actionStackView.translatesAutoresizingMaskIntoConstraints = false
+        actionStackView.axis = .horizontal
+        actionStackView.spacing = 8
+        actionStackView.alignment = .leading
+        actionStackView.isSkeletonable = true
+        
+        let bottomStackView = UIStackView(arrangedSubviews: [actionStackView, captionView])
         bottomStackView.axis = .vertical
         bottomStackView.spacing = 8
-        bottomStackView.alignment = .center
+        bottomStackView.alignment = .leading
         bottomStackView.isSkeletonable = true
         
         let mainStackView = UIStackView(arrangedSubviews: [headerStackView, imageView, bottomStackView])
@@ -96,7 +103,7 @@ class InstagramCloneLoadingView: UIView {
     }
     
     func startAnimating() {
-        
+        showAnimatedGradientSkeleton()
     }
         
     func stopAnimating() {

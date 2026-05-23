@@ -36,7 +36,7 @@ class InstagramCloneCell: UICollectionViewCell {
     
     var caption: String = "" {
             didSet {
-                captionLabel.text = "\(username) \(caption)"
+                captionLabel.text = "\(username)\(caption)"
                 captionLabel.numberOfLines = 2
                 expandButton.isHidden = false
             }
@@ -55,7 +55,7 @@ class InstagramCloneCell: UICollectionViewCell {
     var avatarUrl: String = "" {
         didSet {
             avatarLoadTask = Task {
-                let image = await ImageLoader.shared.loadImage(urlString: avatarUrl)
+                let image = try? await ImageLoader.shared.loadImage(urlString: avatarUrl)
                 await MainActor.run {
                     avatarView.image = image
                 }
@@ -66,7 +66,7 @@ class InstagramCloneCell: UICollectionViewCell {
     var imageUrl: String = "" {
         didSet {
             imageLoadTask = Task {
-                let image = await ImageLoader.shared.loadImage(urlString: imageUrl)
+                let image = try? await ImageLoader.shared.loadImage(urlString: imageUrl)
                 await MainActor.run {
                     postImageView.image = image
                 }

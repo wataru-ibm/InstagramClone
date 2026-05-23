@@ -48,9 +48,10 @@ class InstagramCloneViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         Task {
+            bindViewModel()
             await viewModel.loadPosts()
         }
-        bindViewModel()
+        
     }
     
     private func setupUI() {
@@ -63,6 +64,7 @@ class InstagramCloneViewController: UIViewController {
             cell.avatarUrl = post.avatarUrl
             cell.imageUrl = post.imageUrl
             cell.likeCount = post.likeCount
+            print("1111 UICollectionViewDiffableDataSource")
             cell.isLiked = post.isLiked
             cell.caption = post.caption
             cell.onLikeTapped = { [weak self] in
@@ -70,6 +72,9 @@ class InstagramCloneViewController: UIViewController {
             }
             return cell
         }
+        
+        retryButton.addTarget(self, action: #selector(retryButtonTapped), for: .touchUpInside)
+        
         
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
@@ -90,6 +95,7 @@ class InstagramCloneViewController: UIViewController {
             loadingView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             loadingView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             loadingView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            loadingView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
         
         view.addSubview(errorView)
@@ -98,6 +104,12 @@ class InstagramCloneViewController: UIViewController {
             errorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             errorView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
         ])
+    }
+    
+    @objc private func retryButtonTapped() {
+        Task {
+            await viewModel.loadPosts()
+        }
     }
     
     @objc private func pullToRefresh() {
@@ -112,12 +124,14 @@ class InstagramCloneViewController: UIViewController {
         snapshot.appendSections([.main])
         snapshot.appendItems(posts)
         dataSource.apply(snapshot, animatingDifferences: true)
+        print("1111 applySnapshot")
     }
     
     private func bindViewModel() {
         viewModel.$posts
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] posts in
-            self?.applySnapshot(posts)
+                self?.applySnapshot(posts)
         }
             .store(in: &cancellables)
         
@@ -141,7 +155,8 @@ class InstagramCloneViewController: UIViewController {
             loadingView.stopAnimating()
             errorView.isHidden = true
             collectionView.isHidden = false
-            
+            loadingView.isHidden = true
+        
         case .error(let message):
             loadingView.stopAnimating()
             loadingView.isHidden = true

@@ -13,7 +13,7 @@ class ImageLoader {
     
     private let cache = NSCache<NSURL, UIImage>()
     
-    func loadImage(urlString: String) async -> UIImage? {
+    func loadImage(urlString: String) async throws -> UIImage? {
         
         guard let url = URL(string: urlString) else {
             return nil

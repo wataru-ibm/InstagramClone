@@ -22,6 +22,8 @@ struct Post: Hashable, Decodable {
         hasher.combine(avatarUrl)
         hasher.combine(imageUrl)
         hasher.combine(caption)
+        hasher.combine(isLiked)
+        hasher.combine(likeCount)
     }
     
     static func == (lhs: Post, rhs: Post) -> Bool {
@@ -30,6 +32,8 @@ struct Post: Hashable, Decodable {
         && lhs.avatarUrl == rhs.avatarUrl
         && lhs.imageUrl == rhs.imageUrl
         && lhs.caption == rhs.caption
+        && lhs.isLiked == rhs.isLiked
+        && lhs.likeCount == rhs.likeCount
     }
     
 }
