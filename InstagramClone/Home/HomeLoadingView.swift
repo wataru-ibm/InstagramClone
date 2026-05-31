@@ -8,7 +8,7 @@
 import UIKit
 import SkeletonView
 
-class InstagramCloneLoadingView: UIView {
+class HomeLoadingView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class InstagramCloneCell: UICollectionViewCell {
+class HomePostCell: UICollectionViewCell {
     
     private let avatarView = UIImageView()
     private let usernameLabel = UILabel()

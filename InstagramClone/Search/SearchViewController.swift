@@ -1,36 +1,38 @@
 //
-//  ViewController.swift
+//  SearchViewController.swift
 //  InstagramClone
 //
-//  Created by Wataru Uehara on 2026/04/17.
+//  Created by Wataru Uehara on 2026/05/23.
 //
 
 import UIKit
 import Combine
 
-class InstagramCloneViewController: UIViewController {
-    
-    private let collectionView = InstagramCloneView(frame: .zero)
-    private let viewModel = HomeViewModel()
+class SearchViewController: UIViewController {
+    private let collectionView = SearchCollectionView(frame: .zero)
+    private let viewModel = SearchViewModel()
     private var dataSource: UICollectionViewDiffableDataSource<Section, Post>!
     private var cancellables: Set<AnyCancellable> = []
-    private let loadingView: InstagramCloneLoadingView = {
-        let view = InstagramCloneLoadingView()
+    private let loadingView: HomeLoadingView = {
+        let view = HomeLoadingView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
+    enum Section {
+        case main
+    }
+    
     private let errorMessageLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .secondaryLabel
-        label.font = .systemFont(ofSize: 13)
         label.textAlignment = .center
-        label.numberOfLines = 0
+        label.font = .systemFont(ofSize: 13)
+        label.textColor = .secondaryLabel
         return label
     }()
     
     private let retryButton: UIButton = {
-        let button = UIButton(type: .system)
+        let button = UIButton()
         button.setTitle("再試行", for: .normal)
         return button
     }()
@@ -39,54 +41,32 @@ class InstagramCloneViewController: UIViewController {
         let stackView = UIStackView(arrangedSubviews: [errorMessageLabel, retryButton])
         stackView.axis = .vertical
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.spacing = 16
         stackView.alignment = .center
+        stackView.spacing = 16
         return stackView
     }()
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupDataSource()
         Task {
             bindViewModel()
-            await viewModel.loadPosts()
+            await viewModel.loadSearchPosts()
         }
-        
     }
     
     private func setupUI() {
-        dataSource = UICollectionViewDiffableDataSource<Section, Post>(collectionView: collectionView){collectionView, indexPath, post in
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: InstagramCloneCell.reuseIdentifier, for: indexPath) as? InstagramCloneCell else {
-                return UICollectionViewCell()
-            }
-            
-            cell.username = post.username
-            cell.avatarUrl = post.avatarUrl
-            cell.imageUrl = post.imageUrl
-            cell.likeCount = post.likeCount
-            print("1111 UICollectionViewDiffableDataSource")
-            cell.isLiked = post.isLiked
-            cell.caption = post.caption
-            cell.onLikeTapped = { [weak self] in
-                self? .viewModel.toggleLike(at: indexPath.row)
-            }
-            return cell
-        }
-        
-        retryButton.addTarget(self, action: #selector(retryButtonTapped), for: .touchUpInside)
-        
-        
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
-        collectionView.refreshControl = refreshControl
-        
         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.backgroundColor = .systemBackground
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
         
         view.addSubview(loadingView)
@@ -95,36 +75,41 @@ class InstagramCloneViewController: UIViewController {
             loadingView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             loadingView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             loadingView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            loadingView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            loadingView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
         
         view.addSubview(errorView)
         errorView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             errorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            errorView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            errorView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
+        
+        retryButton.addTarget(self, action: #selector(retryButtonTapped), for: .touchUpInside)
     }
     
     @objc private func retryButtonTapped() {
         Task {
-            await viewModel.loadPosts()
+            await viewModel.loadSearchPosts()
         }
     }
     
-    @objc private func pullToRefresh() {
-        Task {
-            await viewModel.loadPosts()
-            collectionView.refreshControl?.endRefreshing()
+    private func setupDataSource() {
+        dataSource = UICollectionViewDiffableDataSource<Section, Post>(collectionView: collectionView) { collectionView, indexPath, post in
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchGridCell.reuseIdentifier, for: indexPath) as? SearchGridCell else {
+                return UICollectionViewCell()
+            }
+            
+            cell.imageUrl = post.imageUrl
+            return cell
         }
     }
-
+    
     private func applySnapshot(_ posts: [Post]) {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Post>()
         snapshot.appendSections([.main])
         snapshot.appendItems(posts)
         dataSource.apply(snapshot, animatingDifferences: true)
-        print("1111 applySnapshot")
     }
     
     private func bindViewModel() {
@@ -132,7 +117,7 @@ class InstagramCloneViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] posts in
                 self?.applySnapshot(posts)
-        }
+            }
             .store(in: &cancellables)
         
         viewModel.$status
@@ -143,7 +128,7 @@ class InstagramCloneViewController: UIViewController {
             .store(in: &cancellables)
     }
     
-    private func updateViewForStatus(_ status: HomeViewModel.Status) {
+    private func updateViewForStatus(_ status: SearchViewModel.Status) {
         switch status {
         case .loading:
             collectionView.isHidden = true
@@ -152,22 +137,20 @@ class InstagramCloneViewController: UIViewController {
             loadingView.startAnimating()
             
         case .loaded:
-            loadingView.stopAnimating()
-            errorView.isHidden = true
             collectionView.isHidden = false
+            errorView.isHidden = true
             loadingView.isHidden = true
-        
-        case .error(let message):
             loadingView.stopAnimating()
-            loadingView.isHidden = true
+            
+        case .error(let message):
             collectionView.isHidden = true
             errorView.isHidden = false
+            loadingView.stopAnimating()
             errorMessageLabel.text = message
         }
     }
     
-    enum Section {
-    case main
-    }
+    
 }
+
 

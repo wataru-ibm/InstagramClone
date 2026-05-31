@@ -13,7 +13,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let window = UIWindow(windowScene: windowScene)
         window.backgroundColor = .systemBackground
-        window.rootViewController = UINavigationController(rootViewController: InstagramCloneViewController())
+        window.rootViewController = UINavigationController(rootViewController: MainTabBarController())
         window.makeKeyAndVisible()
         self.window = window
     }

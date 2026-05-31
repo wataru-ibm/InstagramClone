@@ -7,7 +7,7 @@
 
 import UIKit
 
-class InstagramCloneView: UICollectionView {
+class HomeCollectionView: UICollectionView {
 
     private static func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
         let itemSize = NSCollectionLayoutSize(
@@ -26,9 +26,9 @@ class InstagramCloneView: UICollectionView {
     }
 
     init (frame: CGRect) {
-        let layout = InstagramCloneView.createCompositionalLayout()
+        let layout = HomeCollectionView.createCompositionalLayout()
         super.init(frame: frame, collectionViewLayout: layout)
-        self.register(InstagramCloneCell.self, forCellWithReuseIdentifier: InstagramCloneCell.reuseIdentifier)
+        self.register(HomePostCell.self, forCellWithReuseIdentifier: HomePostCell.reuseIdentifier)
     }
 
     required init?(coder: NSCoder) {
