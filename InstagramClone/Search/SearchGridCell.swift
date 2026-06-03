@@ -9,9 +9,9 @@ import UIKit
 
 class SearchGridCell: UICollectionViewCell {
     
-    private let postImageView = UIImageView()
-    
     static let reuseIdentifier = "SearchGridCell"
+    
+    private let postImageView = UIImageView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
