@@ -30,6 +30,8 @@ class SearchGridCell: UICollectionViewCell {
         }
     }
     
+    var thumbnailImageView: UIImageView { postImageView }
+    
     private var imageLoadTask: Task<Void, Never>?
     
     private func setupUI() {

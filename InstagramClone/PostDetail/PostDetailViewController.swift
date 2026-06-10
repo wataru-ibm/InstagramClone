@@ -31,6 +31,8 @@ class PostDetailViewController: UIViewController {
     
     private func setupUI() {
         view.addSubview(imageDetailView)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        view.addGestureRecognizer(tap)
         imageDetailView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             imageDetailView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -42,5 +44,9 @@ class PostDetailViewController: UIViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc private func handleTap() {
+        dismiss(animated: true)
     }
 }

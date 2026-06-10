@@ -18,6 +18,7 @@ class SearchViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    private let zoomTransitionDelegate = ZoomTransitionDelegate()
     
     enum Section {
         case main
@@ -60,6 +61,7 @@ class SearchViewController: UIViewController {
     
     private func setupUI() {
         view.addSubview(collectionView)
+        collectionView.delegate = self
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .systemBackground
         NSLayoutConstraint.activate([
@@ -153,4 +155,20 @@ class SearchViewController: UIViewController {
     
 }
 
+extension SearchViewController: UICollectionViewDelegate {
+    
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let post = dataSource.itemIdentifier(for: indexPath) else { return }
+        guard let cell = collectionView.cellForItem(at: indexPath) as? SearchGridCell else { return }
+        zoomTransitionDelegate.fromImageView = cell.thumbnailImageView
+        
+        let detailVC = PostDetailViewController(post: post)
+        detailVC.transitioningDelegate = zoomTransitionDelegate
+        detailVC.modalPresentationStyle = .fullScreen
+        present(detailVC, animated: true)
+    }
+    
+    
+}
 

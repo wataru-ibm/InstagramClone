@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ZoomAnimator: UIViewControllerAnimatedTransitioning {
+class ZoomAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     
     var isPresenting: Bool = false
     var fromImageView: UIImageView?
