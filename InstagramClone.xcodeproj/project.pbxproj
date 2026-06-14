@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		684B72E32FDD78C90053F5BA /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 684B72E22FDD78C90053F5BA /* RealmSwift */; };
 		6866B41F2FB17C83002C734D /* SkeletonView in Frameworks */ = {isa = PBXBuildFile; productRef = 6866B41E2FB17C83002C734D /* SkeletonView */; };
 /* End PBXBuildFile section */
 
@@ -40,6 +41,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				684B72E32FDD78C90053F5BA /* RealmSwift in Frameworks */,
 				6866B41F2FB17C83002C734D /* SkeletonView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -84,6 +86,7 @@
 			name = InstagramClone;
 			packageProductDependencies = (
 				6866B41E2FB17C83002C734D /* SkeletonView */,
+				684B72E22FDD78C90053F5BA /* RealmSwift */,
 			);
 			productName = InstagramClone;
 			productReference = 6866B3A72F921DD5002C734D /* InstagramClone.app */;
@@ -115,6 +118,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				6866B41D2FB17C83002C734D /* XCRemoteSwiftPackageReference "SkeletonView" */,
+				684B72DF2FDD78C90053F5BA /* XCRemoteSwiftPackageReference "realm-swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 6866B3A82F921DD5002C734D /* Products */;
@@ -344,6 +348,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		684B72DF2FDD78C90053F5BA /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.0.0;
+			};
+		};
 		6866B41D2FB17C83002C734D /* XCRemoteSwiftPackageReference "SkeletonView" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Juanpe/SkeletonView";
@@ -355,6 +367,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		684B72E22FDD78C90053F5BA /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 684B72DF2FDD78C90053F5BA /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
 		6866B41E2FB17C83002C734D /* SkeletonView */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 6866B41D2FB17C83002C734D /* XCRemoteSwiftPackageReference "SkeletonView" */;
