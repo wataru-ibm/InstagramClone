@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6832420E2FF0AA09008AA310 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6832420D2FF0AA09008AA310 /* RealmSwift */; };
+		683242112FF148F9008AA310 /* SkeletonView in Frameworks */ = {isa = PBXBuildFile; productRef = 683242102FF148F9008AA310 /* SkeletonView */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				683242112FF148F9008AA310 /* SkeletonView in Frameworks */,
 				6832420E2FF0AA09008AA310 /* RealmSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -84,6 +86,7 @@
 			name = InstagramClone;
 			packageProductDependencies = (
 				6832420D2FF0AA09008AA310 /* RealmSwift */,
+				683242102FF148F9008AA310 /* SkeletonView */,
 			);
 			productName = InstagramClone;
 			productReference = 6866B3A72F921DD5002C734D /* InstagramClone.app */;
@@ -115,6 +118,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				6832420A2FF0AA09008AA310 /* XCRemoteSwiftPackageReference "realm-swift" */,
+				6832420F2FF148F9008AA310 /* XCRemoteSwiftPackageReference "SkeletonView" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 6866B3A82F921DD5002C734D /* Products */;
@@ -367,6 +371,14 @@
 				kind = branch;
 			};
 		};
+		6832420F2FF148F9008AA310 /* XCRemoteSwiftPackageReference "SkeletonView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Juanpe/SkeletonView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.31.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -374,6 +386,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6832420A2FF0AA09008AA310 /* XCRemoteSwiftPackageReference "realm-swift" */;
 			productName = RealmSwift;
+		};
+		683242102FF148F9008AA310 /* SkeletonView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6832420F2FF148F9008AA310 /* XCRemoteSwiftPackageReference "SkeletonView" */;
+			productName = SkeletonView;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
