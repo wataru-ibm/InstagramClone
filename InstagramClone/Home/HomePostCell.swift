@@ -19,6 +19,11 @@ class HomePostCell: UICollectionViewCell {
         button.tintColor = .label
         return button
     }()
+    private let bookmarkButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.tintColor = .label
+        return button
+    }()
     private let expandButton = UIButton(type: .system)
     
     var likeCount: Int = 0 {
@@ -74,12 +79,27 @@ class HomePostCell: UICollectionViewCell {
         }
     }
     
+    var isBookmarked: Bool = false {
+        didSet {
+            let bookedImage = isBookmarked
+            ? UIImage(systemName: "bookmark.fill")
+            : UIImage(systemName: "bookmark")
+            bookmarkButton.setImage(bookedImage, for: .normal)
+            bookmarkButton.tintColor = isBookmarked ? .systemBlue : .label
+        }
+    }
+    
     var onLikeTapped: (() -> Void)?
+    var onBookmarkTapped: (() -> Void)?
     var avatarLoadTask: Task<Void, Never>?
     var imageLoadTask: Task<Void, Never>?
     
     @objc private func likeTapped() {
         onLikeTapped?()
+    }
+    
+    @objc private func bookmarkTapped() {
+        onBookmarkTapped?()
     }
     
     @objc private func expandTapped() {
@@ -110,6 +130,8 @@ class HomePostCell: UICollectionViewCell {
     
     private func setupUIStackView() {
         
+        let spacer = UIView()
+        
         let headerStack = UIStackView(arrangedSubviews: [avatarView, usernameLabel])
         headerStack.axis = .horizontal
         headerStack.spacing = 8
@@ -118,7 +140,14 @@ class HomePostCell: UICollectionViewCell {
         headerStack.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 0, leading: 12, bottom: 0, trailing: 12)
         headerStack.translatesAutoresizingMaskIntoConstraints = false
         
-        let bottomStack = UIStackView(arrangedSubviews: [likeButton, likeCountLabel, captionLabel, expandButton])
+        let likeCountRow = UIStackView(arrangedSubviews: [likeCountLabel, spacer, bookmarkButton])
+        likeCountRow.axis = .horizontal
+        likeCountRow.spacing = 4
+        likeCountRow.alignment = .center
+        likeCountRow.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 12)
+        likeCountRow.translatesAutoresizingMaskIntoConstraints = false
+        
+        let bottomStack = UIStackView(arrangedSubviews: [likeButton, likeCountRow, captionLabel, expandButton])
         bottomStack.axis = .vertical
         bottomStack.spacing = 4
         bottomStack.alignment = .leading
@@ -141,17 +170,20 @@ class HomePostCell: UICollectionViewCell {
             avatarView.widthAnchor.constraint(equalToConstant: 32),
             avatarView.heightAnchor.constraint(equalToConstant: 32),
             
-            
             mainStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
             mainStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             mainStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             mainStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
                                     
-        postImageView.heightAnchor.constraint(equalTo: postImageView.widthAnchor),
+            postImageView.heightAnchor.constraint(equalTo: postImageView.widthAnchor),
+            
+            likeCountRow.widthAnchor.constraint(equalTo: bottomStack.layoutMarginsGuide.widthAnchor),
             
         ])
         
         likeButton.addTarget(self, action: #selector(likeTapped), for: .touchUpInside)
+        bookmarkButton.setImage(UIImage(systemName: "bookmark"), for: .normal)
+        bookmarkButton.addTarget(self, action: #selector(bookmarkTapped), for: .touchUpInside)
         
         captionLabel.numberOfLines = 2
         captionLabel.lineBreakMode = .byTruncatingTail

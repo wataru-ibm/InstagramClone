@@ -8,13 +8,17 @@
 import UIKit
 
 class BookmarkViewController: UIViewController {
-    private let repository = BookmarkRepository()
+    private let repository = BookmarkRepository.shared
     private var posts: [BookmarkedPost] = []
     private let tableView = UITableView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         loadBookmarks()
     }
     

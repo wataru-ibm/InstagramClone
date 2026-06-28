@@ -15,6 +15,18 @@ struct Post: Hashable, Decodable {
     var likeCount: Int
     let caption: String
     var isLiked: Bool
+    var isBookmarked: Bool = false
+    
+    enum CodingKeys: String, CodingKey {
+        case id,
+             username,
+             avatarUrl,
+             imageUrl,
+             caption,
+             isLiked,
+             likeCount,
+             isBookmarked
+    }
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
@@ -24,6 +36,7 @@ struct Post: Hashable, Decodable {
         hasher.combine(caption)
         hasher.combine(isLiked)
         hasher.combine(likeCount)
+        hasher.combine(isBookmarked)
     }
     
     static func == (lhs: Post, rhs: Post) -> Bool {
@@ -34,6 +47,7 @@ struct Post: Hashable, Decodable {
         && lhs.caption == rhs.caption
         && lhs.isLiked == rhs.isLiked
         && lhs.likeCount == rhs.likeCount
+        && lhs.isBookmarked == rhs.isBookmarked
     }
     
 }
@@ -46,4 +60,16 @@ extension Post {
         Post(id: 4, username: "hirose_goro", avatarUrl: "https://picsum.photos/seed/yamada/200/200", imageUrl: "https://picsum.photos/seed/post4/600/600", likeCount: 1570, caption: "iOS development is cool!", isLiked: true),
         Post(id: 5, username: "matsuda_shiro", avatarUrl: "https://picsum.photos/seed/ito/200/200", imageUrl: "https://picsum.photos/seed/post5/600/600", likeCount: 1, caption: "React Native is great!リアクトネイティブは素晴らしい！React Native is great!リアクトネイティブは素晴らしい！React Native is great!リアクトネイティブは素晴らしい！React Native is great!リアクトネイティブは素晴らしい！", isLiked: false),
     ]
+    
+    init(from decorder: Decoder) throws {
+        let container = try decorder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(Int.self, forKey: .id)
+        username = try container.decode(String.self, forKey: .username)
+        imageUrl = try container.decode(String.self, forKey: .imageUrl)
+        avatarUrl = try container.decode(String.self, forKey: .avatarUrl)
+        caption = try container.decode(String.self, forKey: .caption)
+        likeCount = try container.decode(Int.self, forKey: .likeCount)
+        isLiked = try container.decode(Bool.self, forKey: .isLiked)
+        isBookmarked = try container.decodeIfPresent(Bool.self, forKey: .isBookmarked) ?? false
+    }
 }

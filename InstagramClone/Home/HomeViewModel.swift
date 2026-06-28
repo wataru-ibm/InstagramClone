@@ -46,4 +46,19 @@ class HomeViewModel {
         posts[index].likeCount += posts[index].isLiked ? 1 : -1
             
     }
+    
+    func toggleBookmark(at index: Int) {
+        guard posts.indices.contains(index) else {
+            return
+        }
+        
+        posts[index].isBookmarked.toggle()
+        
+        let post = posts[index]
+        if post.isBookmarked {
+            BookmarkRepository.shared.save(post: post)
+        } else {
+            BookmarkRepository.shared.delete(postId: post.id)
+        }
+    }
 }

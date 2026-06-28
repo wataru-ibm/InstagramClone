@@ -9,4 +9,3 @@ class BookmarkedPost: Object {
     @Persisted var caption: String = ""
     @Persisted var savedAt: Date = Date()
 }
-

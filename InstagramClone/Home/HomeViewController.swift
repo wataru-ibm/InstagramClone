@@ -66,10 +66,14 @@ class HomeViewController: UIViewController {
             cell.likeCount = post.likeCount
             print("1111 UICollectionViewDiffableDataSource")
             cell.isLiked = post.isLiked
+            cell.isBookmarked = post.isBookmarked
             cell.caption = post.caption
             cell.onLikeTapped = { [weak self] in
                 self? .viewModel.toggleLike(at: indexPath.row)
             }
+            cell.onBookmarkTapped = { [weak self] in
+                self? .viewModel.toggleBookmark(at: indexPath.row)
+                }
             return cell
         }
         

@@ -48,6 +48,7 @@ class ZoomAnimator: NSObject, UIViewControllerAnimatedTransitioning {
             })
             
         } else {
+//            containerView.addSubview(toVC.view)
             guard let fromImageView = fromImageView else { return }
             let startFrame = fromImageView.convert(fromImageView.bounds, to: containerView)
             
@@ -55,11 +56,11 @@ class ZoomAnimator: NSObject, UIViewControllerAnimatedTransitioning {
             let scaleY = startFrame.height / fromVC.view.frame.height
             
             let tx = startFrame.midX - fromVC.view.frame.midX
-            let yx = startFrame.midY - fromVC.view.frame.midY
+            let ty = startFrame.midY - fromVC.view.frame.midY
             
             UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
                 fromVC.view.transform = CGAffineTransform(scaleX: scaleX, y: scaleY)
-                    .concatenating(CGAffineTransform(translationX: tx, y:yx))
+                    .concatenating(CGAffineTransform(translationX: tx, y: ty))
             }, completion: { _ in
                 fromVC.view.transform = .identity
                 transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
