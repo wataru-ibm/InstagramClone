@@ -7,17 +7,20 @@
 
 import UIKit
 
-class PostDetailViewController: UIViewController {
-    
+class PostDetailViewController: UIViewController, ZoomTransitionable {
+
     private let post: Post
     private let imageDetailView = UIImageView()
     private var imageLoadTask: Task<Void, Never>?
-    
+    var transitionImageView: UIImageView {
+        imageDetailView
+    }
+
     init(post: Post) {
         self.post = post
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -28,7 +31,7 @@ class PostDetailViewController: UIViewController {
             }
         }
     }
-    
+
     private func setupUI() {
         view.addSubview(imageDetailView)
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
@@ -41,11 +44,11 @@ class PostDetailViewController: UIViewController {
             imageDetailView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     @objc private func handleTap() {
         dismiss(animated: true)
     }

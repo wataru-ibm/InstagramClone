@@ -93,6 +93,7 @@ class HomePostCell: UICollectionViewCell {
     var onBookmarkTapped: (() -> Void)?
     var avatarLoadTask: Task<Void, Never>?
     var imageLoadTask: Task<Void, Never>?
+    var onExpandTapped: (() -> Void)?
     
     @objc private func likeTapped() {
         onLikeTapped?()
@@ -105,6 +106,7 @@ class HomePostCell: UICollectionViewCell {
     @objc private func expandTapped() {
         captionLabel.numberOfLines = 0
         expandButton.isHidden = true
+        onExpandTapped?()
     }
     
     static let reuseIdentifier = "InstagramCloneCell"

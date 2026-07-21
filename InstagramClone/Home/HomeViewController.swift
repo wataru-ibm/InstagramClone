@@ -74,6 +74,9 @@ class HomeViewController: UIViewController {
             cell.onBookmarkTapped = { [weak self] in
                 self? .viewModel.toggleBookmark(at: indexPath.row)
                 }
+            cell.onExpandTapped = { [weak self] in
+                self? .collectionView.collectionViewLayout.invalidateLayout()
+            }
             return cell
         }
         
